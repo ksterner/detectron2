@@ -57,7 +57,7 @@ class DetectionCheckpointer(Checkpointer):
         if path:
             print("Path 1: " + path);
             parsed_url = urlparse(path)
-            print("Parssed URL: " + parsed_url);
+            print("Parssed URL: ".join(parsed_url));
             self._parsed_url_during_load = parsed_url
             path = parsed_url._replace(query="").geturl()  # remove query from filename
             print("Path 2: " + path);
