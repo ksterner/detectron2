@@ -58,14 +58,14 @@ class DetectionCheckpointer(Checkpointer):
             print("Path 1: " + path)
             oldpath = path
             parsed_url = urlparse(path)
-            print("Parssed URL: ".join(parsed_url))
+            print("Parsssed URL: " + str(parsed_url))
             self._parsed_url_during_load = parsed_url
             path = parsed_url._replace(query="").geturl()  # remove query from filename
             print("Path 2: " + path);
             newpath = path
             path = self.path_manager.get_local_path(path)
-            os.system(f"cp {oldpath} {newpath}")
-            print("Path 3: " + path);
+            #os.system(f"cp {oldpath} {newpath}")
+            #print("Path 3: " + path);
         ret = super().load(path, *args, **kwargs)
 
         if need_sync:
@@ -109,6 +109,7 @@ class DetectionCheckpointer(Checkpointer):
         assert self._parsed_url_during_load is not None, "`_load_file` must be called inside `load`"
         parsed_url = self._parsed_url_during_load
         queries = parse_qs(parsed_url.query)
+        print("queries = " + str(queries))
         if queries.pop("matching_heuristics", "False") == ["True"]:
             loaded["matching_heuristics"] = True
         if len(queries) > 0:
