@@ -65,8 +65,8 @@ class DetectionCheckpointer(Checkpointer):
             newpath = path
             path = self.path_manager.get_local_path(path)
             #os.system(f"cp {oldpath} {newpath}")
-            #print("Path 3: " + path);
-        ret = super().load(path, *args, **kwargs)
+            print("Path 3: " + path);
+        ret = super().load(oldpath, *args, **kwargs)
 
         if need_sync:
             logger.info("Broadcasting model states from main worker ...")
@@ -75,6 +75,7 @@ class DetectionCheckpointer(Checkpointer):
         return ret
 
     def _load_file(self, filename):
+        print("Start _load_file, filename = " + filename)
         if filename.endswith(".pkl"):
             with PathManager.open(filename, "rb") as f:
                 data = pickle.load(f, encoding="latin1")
@@ -103,6 +104,7 @@ class DetectionCheckpointer(Checkpointer):
             }
             return {"model": model_state, "__author__": "pycls", "matching_heuristics": True}
 
+        print("About to load model " + filename)
         loaded = self._torch_load(filename)
         if "model" not in loaded:
             loaded = {"model": loaded}
@@ -119,9 +121,11 @@ class DetectionCheckpointer(Checkpointer):
         return loaded
 
     def _torch_load(self, f):
+        print("In _torch_load...")
         return super()._load_file(f)
 
     def _load_model(self, checkpoint):
+        print("In _load_model...")
         if checkpoint.get("matching_heuristics", False):
             self._convert_ndarray_to_tensor(checkpoint["model"])
             # convert weights by name-matching heuristics
