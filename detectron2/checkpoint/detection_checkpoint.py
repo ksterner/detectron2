@@ -64,7 +64,7 @@ class DetectionCheckpointer(Checkpointer):
             print("Path 2: " + path);
             newpath = path
             path = self.path_manager.get_local_path(path)
-            os.copy(oldpath, newpath)
+            os.system(f"cp {oldpath} {newpath}")
             print("Path 3: " + path);
         ret = super().load(path, *args, **kwargs)
 
