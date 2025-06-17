@@ -55,13 +55,16 @@ class DetectionCheckpointer(Checkpointer):
                 path = None  # don't load if not readable
 
         if path:
-            print("Path 1: " + path);
+            print("Path 1: " + path)
+            oldpath = path
             parsed_url = urlparse(path)
-            print("Parssed URL: ".join(parsed_url));
+            print("Parssed URL: ".join(parsed_url))
             self._parsed_url_during_load = parsed_url
             path = parsed_url._replace(query="").geturl()  # remove query from filename
             print("Path 2: " + path);
+            newpath = path
             path = self.path_manager.get_local_path(path)
+            os.rename(oldpath, newpath)
             print("Path 3: " + path);
         ret = super().load(path, *args, **kwargs)
 
