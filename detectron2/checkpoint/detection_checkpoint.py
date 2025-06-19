@@ -112,6 +112,8 @@ class DetectionCheckpointer(Checkpointer):
         parsed_url = self._parsed_url_during_load
         queries = parse_qs(parsed_url.query)
         print("queries = " + str(queries))
+        # Brute force the "unsupported query" problem:
+        queries = {}
         if queries.pop("matching_heuristics", "False") == ["True"]:
             loaded["matching_heuristics"] = True
         if len(queries) > 0:
